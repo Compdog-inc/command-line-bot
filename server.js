@@ -42,7 +42,17 @@ client.on('message', function(message) {
             var rightReact;
         
             function updateReaction(){
+                if(currentPage < output.length - 1 && !rightReact){
+                    msg.react('➡').then(r=>rightReact = r);
+                } else if(rightReact){
+                    rightReact.remove().then(()=>rightReact = null);
+                }
                 
+                if(currentPage > 0 && !leftReact){
+                    msg.react('⬅').then(r=>leftReact = r);
+                } else if(leftReact){
+                    leftReact.remove().then(()=>leftReact = null);
+                }
             }
             
             proc.stdout.on('data', (data) => {
