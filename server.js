@@ -47,6 +47,11 @@ client.on('message', function(message) {
                 if(currentPage > 0 && !leftReact){
                     var l = await msg.react('⬅');
                     leftReact = l;
+                    if(rightReact){
+                        await rightReact.remove();
+                        var r = await msg.react('➡');
+                        rightReact = r;
+                    }
                 } else if(currentPage <= 0 && leftReact){
                     leftReact.remove().then(()=>leftReact = null);
                 }
