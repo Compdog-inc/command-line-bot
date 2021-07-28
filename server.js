@@ -38,8 +38,7 @@ client.on('message', function(message) {
             var output = [];
         
             proc.stdout.on('data', (data) => {
-                console.log(typeof(data));
-                output = data.match(/.{1,4000}/g);
+                output = data.toString().match(/.{1,4000}/g);
                 embed.setDescription(output[0]);
                 msg.edit(embed);
             });
