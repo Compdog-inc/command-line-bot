@@ -30,7 +30,9 @@ client.on('message', function(message) {
     if(cmd) {
        message.channel.send(cmd);
        const child = spawn('ls', ['-lh'], {
-           shell:true
+           shell:true,
+           detached: true, 
+           stdio: [ 'ignore', 1, 2 ]
        });
         child.stdout.on('data', (data) => {
   console.log(`stdout: ${data}`);
