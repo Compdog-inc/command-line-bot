@@ -52,7 +52,7 @@ client.on('message', function(message) {
                 
                 if(currentPage < output.length - 1 && !rightReact){
                     msg.react('➡').then(r=>rightReact = r);
-                } else if(currentPage >= output.length && rightReact){
+                } else if(currentPage >= output.length - 1 && rightReact){
                     rightReact.remove().then(()=>rightReact = null);
                 }
             }
