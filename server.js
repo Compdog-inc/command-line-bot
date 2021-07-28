@@ -23,6 +23,11 @@ client.on('message', function(message) {
 
     if (message.author.bot)
         return;
+    
+    var cmd = message.content.trimStart();
+    if(cmd) {
+       message.channel.send(cmd);
+    }
 });
 
 client.login(process.env.TOKEN);
