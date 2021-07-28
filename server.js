@@ -28,20 +28,19 @@ client.on('message', function(message) {
 
     var cmd = message.content.substring(mentionText.length).trimStart();
     if(cmd) {
-       const child = spawn(cmd.split(' ')[0], [cmd.split(' ').splice(1).join(' ')], {
-           shell:true
-       });
-        child.stdout.on('data', (data) => {
-  console.log(`stdout: ${data}`);
-});
+        var proc = spawn(cmd.split(' ')[0], [cmd.split(' ').splice(1).join(' ')], {
+            shell:true
+        });
 
-child.on('close', (code) => {
-  console.log(`child process close all stdio with code ${code}`);
-});
+        var msg = message.channel.send(cmd);
+        
+        proc.stdout.on('data', (data) => {
+            msg.edit(cmd+"\n"+data);
+        });
 
-child.on('exit', (code) => {
-  console.log(`child process exited with code ${code}`);
-});
+        proc.on('exit', (code) => {
+            msg.edit(msg.content+"\n"+"Exited with code "+code+".");
+        });
     }
 });
 
