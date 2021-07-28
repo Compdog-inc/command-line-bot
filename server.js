@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 
-const mentionText = "<@869840191362310146>";
+const mentionText = "<@!869840191362310146>";
 const client = new Discord.Client();
 
 process.on('uncaughtException', function(error) {
