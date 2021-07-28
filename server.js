@@ -35,11 +35,11 @@ client.on('message', function(message) {
                 shell:true
             });
             
-            var output = "";
+            var output = [];
         
             proc.stdout.on('data', (data) => {
-                output += data;
-                embed.setDescription(output);
+                output = data.match(/.{1,4000}/g);
+                embed.setDescription(output[0]);
                 msg.edit(embed);
             });
 
