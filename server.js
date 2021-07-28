@@ -57,8 +57,7 @@ client.on('message', function(message) {
             }
             
             function updateFooter(){
-                console.log("E: "+exitCode+", T: "+typeof(exitCode));
-                if(exitCode){
+                if(exitCode != undefined && exitCode != null){
                        embed.setFooter(`Exited with code ${exitCode}. Page ${(currentPage+1)}/${output.length}`);
                 } else {
                        embed.setFooter(`Page ${(currentPage+1)}/${output.length}`);
@@ -102,7 +101,6 @@ client.on('message', function(message) {
 
             proc.on('exit', (code) => {
                 exitCode = code;
-                console.log('exit');
                 updateFooter();
                 msg.edit(embed);
             });
