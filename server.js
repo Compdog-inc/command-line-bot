@@ -16,7 +16,6 @@ client.on('ready', function() {
 });
 
 client.on('message', function(message) {
-    console.log(message.content);
     if(!message.content.startsWith(mentionText))
       return;
   
@@ -30,7 +29,6 @@ client.on('message', function(message) {
     if(cmd) {
        message.channel.send(cmd);
     }
-    console.log("EM");
 });
 
 client.login(process.env.TOKEN);
