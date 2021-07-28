@@ -37,6 +37,7 @@ client.on('message', function(message) {
             });
             
             var output = [];
+            var exitCode;
             var currentPage = 0;
             var leftReact;
             var rightReact;
@@ -55,6 +56,14 @@ client.on('message', function(message) {
                 }
             }
             
+            function updateFooter(){
+                if(exitCode){
+                       embed.setFooter(`Exited with code ${exitCode}. Page ${(currentPage+1)}/${output.length}`);
+                } else {
+                       embed.setFooter(`Page ${(currentPage+1)}/${output.length}`);
+                }
+            }
+            
             proc.stdout.on('data', (data) => {
                 output = data.toString().match(new RegExp('(.|[\r\n]){1,' + chunkSize + '}', 'g'));
                 embed.setDescription(output[currentPage]);
@@ -68,6 +77,7 @@ client.on('message', function(message) {
                     if(currentPage < output.length - 1){
                         currentPage++;
                         embed.setDescription(output[currentPage]);
+                        updateFooter();
                         msg.edit(embed);
                         updateReaction();
                     }
@@ -80,6 +90,7 @@ client.on('message', function(message) {
                     if(currentPage > 0){
                         currentPage--;
                         embed.setDescription(output[currentPage]);
+                        updateFooter();
                         msg.edit(embed);
                         updateReaction();
                     }
@@ -88,7 +99,8 @@ client.on('message', function(message) {
             });
 
             proc.on('exit', (code) => {
-                embed.setFooter(`Exited with code ${code}.`);
+                exitCode = code;
+                updateFooter();
                 msg.edit(embed);
             });
         });
