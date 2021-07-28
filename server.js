@@ -67,6 +67,7 @@ client.on('message', function(message) {
             proc.stdout.on('data', (data) => {
                 output = data.toString().match(new RegExp('(.|[\r\n]){1,' + chunkSize + '}', 'g'));
                 embed.setDescription(output[currentPage]);
+                updateFooter();
                 msg.edit(embed);
                 
                 updateReaction();
