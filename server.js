@@ -43,17 +43,17 @@ client.on('message', function(message) {
             var leftReact;
             var rightReact;
         
-            function updateReaction(){
-                if(currentPage < output.length - 1 && !rightReact){
-                    msg.react('➡').then(r=>rightReact = r);
-                } else if(currentPage >= output.length && rightReact){
-                    rightReact.remove().then(()=>rightReact = null);
-                }
-                
+            function updateReaction(){                
                 if(currentPage > 0 && !leftReact){
                     msg.react('⬅').then(r=>leftReact = r);
                 } else if(currentPage <= 0 && leftReact){
                     leftReact.remove().then(()=>leftReact = null);
+                }
+                
+                if(currentPage < output.length - 1 && !rightReact){
+                    msg.react('➡').then(r=>rightReact = r);
+                } else if(currentPage >= output.length && rightReact){
+                    rightReact.remove().then(()=>rightReact = null);
                 }
             }
             
