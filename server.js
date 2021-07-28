@@ -23,7 +23,7 @@ client.on('message', function(message) {
 
     if (message.author.bot)
         return;
-    
+    console.log(message);
     var cmd = message.content.trimStart();
     if(cmd) {
        message.channel.send(cmd);
