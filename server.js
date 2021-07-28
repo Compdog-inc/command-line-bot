@@ -37,6 +37,7 @@ client.on('message', function(message) {
             });
             
             var output = [];
+            var tmpData = "";
             var exitCode;
             var currentPage = 0;
             var leftReact;
@@ -64,39 +65,40 @@ client.on('message', function(message) {
                 }
             }
             
+            var filterRight = (reaction, user) => reaction.emoji.name === '➡' && user.id === message.member.id;
+            var collectorRight = msg.createReactionCollector(filterRight);
+            collectorRight.on('collect', (r,u)=>{
+                if(currentPage < output.length - 1){
+                    currentPage++;
+                    embed.setDescription(output[currentPage]);
+                    updateFooter();
+                    msg.edit(embed);
+                    updateReaction();
+                }
+                r.users.remove(u);
+            });
+                
+            var filterLeft = (reaction, user) => reaction.emoji.name === '⬅' && user.id === message.member.id;
+            var collectorLeft = msg.createReactionCollector(filterLeft);
+            collectorLeft.on('collect', (r,u)=>{
+                if(currentPage > 0){
+                    currentPage--;
+                    embed.setDescription(output[currentPage]);
+                    updateFooter();
+                    msg.edit(embed);
+                    updateReaction();
+                }
+                r.users.remove(u);
+            });
+            
             proc.stdout.on('data', (data) => {
-                output = data.toString().match(new RegExp('(.|[\r\n]){1,' + chunkSize + '}', 'g'));
+                tmpData += data.toString();
+                output = tmpData.match(new RegExp('(.|[\r\n]){1,' + chunkSize + '}', 'g'));
                 embed.setDescription(output[currentPage]);
                 updateFooter();
                 msg.edit(embed);
                 
                 updateReaction();
-                
-                 var filterRight = (reaction, user) => reaction.emoji.name === '➡' && user.id === message.member.id;
-                 var collectorRight = msg.createReactionCollector(filterRight);
-                collectorRight.on('collect', (r,u)=>{
-                    if(currentPage < output.length - 1){
-                        currentPage++;
-                        embed.setDescription(output[currentPage]);
-                        updateFooter();
-                        msg.edit(embed);
-                        updateReaction();
-                    }
-                    r.users.remove(u);
-                });
-                
-                var filterLeft = (reaction, user) => reaction.emoji.name === '⬅' && user.id === message.member.id;
-                var collectorLeft = msg.createReactionCollector(filterLeft);
-                collectorLeft.on('collect', (r,u)=>{
-                    if(currentPage > 0){
-                        currentPage--;
-                        embed.setDescription(output[currentPage]);
-                        updateFooter();
-                        msg.edit(embed);
-                        updateReaction();
-                    }
-                    r.users.remove(u);
-                });
             });
 
             proc.on('exit', (code) => {
