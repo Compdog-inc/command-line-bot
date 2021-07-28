@@ -37,12 +37,48 @@ client.on('message', function(message) {
             });
             
             var output = [];
+            var currentPage = 0;
+            var leftReact;
+            var rightReact;
         
+            function updateReaction(){
+                
+            }
+            
             proc.stdout.on('data', (data) => {
                 output = data.toString().match(new RegExp('(.|[\r\n]){1,' + chunkSize + '}', 'g'));
-                embed.setDescription(output[0]);
+                embed.setDescription(output[currentPage]);
                 msg.edit(embed);
-                msg.react('➡');
+                
+                if(currentPage < output.length - 1){
+                    msg.react('➡').then(r=>rightReact = r);
+                    var filterRight = (reaction, user) => reaction.emoji.name === '➡' && user.id === message.member.id;
+                    var collectorRight = msg.createReactionCollector(filterRight);
+                    collectorRight.on('collect', (r,u)=>{
+                        if(currentPage < output.length - 1){
+                            currentPage++;
+                            embed.setDescription(output[currentPage]);
+                            msg.edit(embed);
+                            updateReaction();
+                        }
+                        r.users.remove(u);
+                    });
+                }
+                
+                if(currentPage > 0){
+                    msg.react('⬅').then(r=>leftReact = r);
+                    var filterLeft = (reaction, user) => reaction.emoji.name === '⬅' && user.id === message.member.id;
+                    var collectorLeft = msg.createReactionCollector(filterLeft);
+                    collectorLeft.on('collect', (r,u)=>{
+                        if(currentPage > 0){
+                            currentPage--;
+                            embed.setDescription(output[currentPage]);
+                            msg.edit(embed);
+                            updateReaction();
+                        }
+                        r.users.remove(u);
+                    });
+                }
             });
 
             proc.on('exit', (code) => {
