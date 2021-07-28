@@ -18,16 +18,20 @@ client.on('ready', function() {
 });
 
 client.on('message', function(message) {
-    if(!message.content.startsWith(mentionText))
-      return;
-  
     if (message.author == client.user)
         return;
 
     if (message.author.bot)
         return;
 
-    var cmd = message.content.substring(mentionText.length).trimStart();
+    var cmd;
+    
+    if(message.content.startsWith(mentionText)){
+        cmd = message.content.substring(mentionText.length).trimStart();
+    } else if(message.content.startsWidth('>')){
+        cmd = message.content.substring(1).trimStart();
+    } else return;
+    
     if(cmd) {
         var embed = new Discord.MessageEmbed();
         embed.setTitle(cmd);
