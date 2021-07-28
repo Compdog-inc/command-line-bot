@@ -42,6 +42,7 @@ client.on('message', function(message) {
                 output = data.toString().match(new RegExp('(.|[\r\n]){1,' + chunkSize + '}', 'g'));
                 embed.setDescription(output[0]);
                 msg.edit(embed);
+                msg.react('➡');
             });
 
             proc.on('exit', (code) => {
