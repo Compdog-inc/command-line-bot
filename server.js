@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 
+const mentionText = "<@869840191362310146>";
 const client = new Discord.Client();
 
 process.on('uncaughtException', function(error) {
@@ -15,7 +16,7 @@ client.on('ready', function() {
 });
 
 client.on('message', function(message) {
-    if(!message.mentions.has(client.user))
+    if(!message.content.startsWith(mentionText))
       return;
   
     if (message.author == client.user)
@@ -23,8 +24,8 @@ client.on('message', function(message) {
 
     if (message.author.bot)
         return;
-    console.log(message);
-    var cmd = message.content.trimStart();
+
+    var cmd = message.content.substring(mentionText.length).trimStart();
     if(cmd) {
        message.channel.send(cmd);
     }
