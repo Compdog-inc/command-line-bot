@@ -28,18 +28,18 @@ client.on('message', function(message) {
 
     var cmd = message.content.substring(mentionText.length).trimStart();
     if(cmd) {
-        var proc = spawn(cmd.split(' ')[0], [cmd.split(' ').splice(1).join(' ')], {
-            shell:true
-        });
-
-        var msg = message.channel.send(cmd);
+        message.channel.send(cmd).then((msg)=>{
+            var proc = spawn(cmd.split(' ')[0], [cmd.split(' ').splice(1).join(' ')], {
+                shell:true
+            });
         
-        proc.stdout.on('data', (data) => {
-            msg.edit(cmd+"\n"+data);
-        });
+            proc.stdout.on('data', (data) => {
+                msg.edit(cmd+"\n"+data);
+            });
 
-        proc.on('exit', (code) => {
-            msg.edit(msg.content+"\n"+"Exited with code "+code+".");
+            proc.on('exit', (code) => {
+                msg.edit(msg.content+"\n"+"Exited with code "+code+".");
+            });
         });
     }
 });
