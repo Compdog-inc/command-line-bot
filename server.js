@@ -29,10 +29,20 @@ client.on('message', function(message) {
     var cmd = message.content.substring(mentionText.length).trimStart();
     if(cmd) {
        message.channel.send(cmd);
-       const child = spawnSync('ls', []);
-        console.error('error', child.error);
-        console.log('stdout ', child.stdout);
-        console.error('stderr ', child.stderr);
+       const child = spawnSync('ls', ['-lh'], {
+           shell:true
+       });
+        child.stdout.on('data', (data) => {
+  console.log(`stdout: ${data}`);
+});
+
+child.on('close', (code) => {
+  console.log(`child process close all stdio with code ${code}`);
+});
+
+child.on('exit', (code) => {
+  console.log(`child process exited with code ${code}`);
+});
     }
 });
 
