@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { spawnSync} = require('child_process');
+const { spawn } = require('child_process');
 
 const mentionText = "<@!869840191362310146>";
 const client = new Discord.Client();
@@ -29,7 +29,7 @@ client.on('message', function(message) {
     var cmd = message.content.substring(mentionText.length).trimStart();
     if(cmd) {
        message.channel.send(cmd);
-       const child = spawnSync('ls', ['-lh'], {
+       const child = spawn('ls', ['-lh'], {
            shell:true
        });
         child.stdout.on('data', (data) => {
