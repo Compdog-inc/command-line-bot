@@ -46,13 +46,13 @@ client.on('message', function(message) {
             function updateReaction(){
                 if(currentPage < output.length - 1 && !rightReact){
                     msg.react('➡').then(r=>rightReact = r);
-                } else if(rightReact){
+                } else if(currentPage >= output.length && rightReact){
                     rightReact.remove().then(()=>rightReact = null);
                 }
                 
                 if(currentPage > 0 && !leftReact){
                     msg.react('⬅').then(r=>leftReact = r);
-                } else if(leftReact){
+                } else if(currentPage <= 0 && leftReact){
                     leftReact.remove().then(()=>leftReact = null);
                 }
             }
