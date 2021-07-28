@@ -65,7 +65,7 @@ client.on('message', function(message) {
     if(cmd) {
        var fargs = smartSplit(cmd, ' ', '"');
        console.log(fargs);
-       const child = spawn(fargs, fargs.splice(1), {
+       const child = spawn(fargs[0], fargs.splice(1), {
            shell:true
        });
         child.stdout.on('data', (data) => {
