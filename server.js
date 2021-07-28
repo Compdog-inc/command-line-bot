@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const { spawn } = require('child_process');
 
+const chunkSize = 4000;
 const mentionText = "<@!869840191362310146>";
 const client = new Discord.Client();
 
@@ -38,7 +39,7 @@ client.on('message', function(message) {
             var output = [];
         
             proc.stdout.on('data', (data) => {
-                output = data.toString().match(/.{1,4000}/g);
+                output = data.toString().match(new RegExp('(.|[\r\n]){1,' + chunkSize + '}', 'g'));
                 embed.setDescription(output[0]);
                 msg.edit(embed);
             });
