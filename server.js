@@ -28,7 +28,7 @@ client.on('message', function(message) {
     
     if(message.content.startsWith(mentionText)){
         cmd = message.content.substring(mentionText.length).trimStart();
-    } else if(message.content.startsWidth('>')){
+    } else if(message.content.startsWith('>')){
         cmd = message.content.substring(1).trimStart();
     } else return;
     
