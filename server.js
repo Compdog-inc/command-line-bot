@@ -43,15 +43,17 @@ client.on('message', function(message) {
             var leftReact;
             var rightReact;
         
-            function updateReaction(){                
+            async function updateReaction(){                
                 if(currentPage > 0 && !leftReact){
-                    msg.react('⬅').then(r=>leftReact = r);
+                    var l = await msg.react('⬅');
+                    leftReact = l;
                 } else if(currentPage <= 0 && leftReact){
                     leftReact.remove().then(()=>leftReact = null);
                 }
                 
                 if(currentPage < output.length - 1 && !rightReact){
-                    msg.react('➡').then(r=>rightReact = r);
+                    var r = await msg.react('➡');
+                    rightReact = r;
                 } else if(currentPage >= output.length - 1 && rightReact){
                     rightReact.remove().then(()=>rightReact = null);
                 }
