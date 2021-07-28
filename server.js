@@ -28,7 +28,9 @@ client.on('message', function(message) {
 
     var cmd = message.content.substring(mentionText.length).trimStart();
     if(cmd) {
-        message.channel.send(cmd).then((msg)=>{
+        var embed = new Discord.MessageEmbed();
+        embed.setTitle(cmd);
+        message.channel.send(embed).then((msg)=>{
             var proc = spawn(cmd.split(' ')[0], [cmd.split(' ').splice(1).join(' ')], {
                 shell:true
             });
@@ -37,11 +39,13 @@ client.on('message', function(message) {
         
             proc.stdout.on('data', (data) => {
                 output += data;
-                msg.edit(cmd + '\n' + output);
+                embed.setDescription(output);
+                msg.edit(embed);
             });
 
             proc.on('exit', (code) => {
-                msg.edit(cmd + '\n' + output + '\n' + "Exited with code " + code + ".");
+                embed.setFooter(`Exited with code ${code}.`);
+                msg.edit(embed);
             });
         });
     }
