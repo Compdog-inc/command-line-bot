@@ -28,7 +28,7 @@ client.on('message', function(message) {
 
     var cmd = message.content.substring(mentionText.length).trimStart();
     if(cmd) {
-       const child = spawn(cmd.split(' ')[0], cmd.split(' ').splice(1).join(' '), {
+       const child = spawn(cmd.split(' ')[0], [cmd.split(' ').splice(1).join(' ')], {
            shell:true
        });
         child.stdout.on('data', (data) => {
